@@ -32,6 +32,22 @@ void clickedSportOnce(Button2& btn) noexcept
       ambient::mode::bIsSportMode = false;
     }
   }
+  else if(!ambient::statments::bIsEnabled)
+  {
+    if(ambient::mode::bIsSportMode)
+    {
+      auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
+      ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
+
+      ambient::mode::bIsSportMode = false;
+      ambient::mode::bIsSportModeRejected = false;
+    }
+    else
+    {
+      ble::pRemoteCharacteristic->writeValue(ambient::colors::colorRed, ambient::msgArraySize);
+      ambient::mode::bIsSportMode = true;
+    }
+  }
 }
 
 #endif
