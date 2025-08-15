@@ -47,19 +47,16 @@ namespace ble
   static MyClientCallback myClientCallback;
 
   bool connectToServer() noexcept;
-  /**
-  * Scan for BLE servers and find the first one that advertises the service we are looking for.
-  */
+
+  //Scan for BLE servers and find the first one that advertises the service we are looking for.
   class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks
   {
-    /**
-    * Called for each advertising BLE server.
-    */
+    //Called for each advertising BLE server.
     void onResult(BLEAdvertisedDevice advertisedDevice) noexcept;
     public:
     MyAdvertisedDeviceCallbacks() noexcept = default;
     MyAdvertisedDeviceCallbacks(const MyAdvertisedDeviceCallbacks&) noexcept = default;
     MyAdvertisedDeviceCallbacks& operator=(const MyAdvertisedDeviceCallbacks&) noexcept = default;
-  };  // MyAdvertisedDeviceCallbacks
+  };
 }
 #endif _A_BLE_H_

@@ -143,11 +143,13 @@ void clickedDouble(Button2& btn) noexcept
   }
   else
   {
-    if(ambient::brightness::brightnessValue >= 70)
+    if(ambient::brightness::brightnessValue > 70)
       ambient::brightness::brightnessValue = 0x03;
     else if(ambient::brightness::brightnessValue == 0x03)
       ambient::brightness::brightnessValue += 2;
     else if(ambient::brightness::brightnessValue == 0x05)
+      ambient::brightness::brightnessValue += 5;
+    else if(ambient::brightness::brightnessValue == 0x0a)
       ambient::brightness::brightnessValue += 5;
     else
       ambient::brightness::brightnessValue += 15;

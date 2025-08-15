@@ -6,7 +6,7 @@ namespace ble
   #ifdef AUTO_PAIR
   esp_bd_addr_t espBLEAddress;
   #else
-  esp_bd_addr_t espBLEAddress { 0xc0, 0x00, 0x00, 0x00, 0x09, 0x29 };
+  esp_bd_addr_t espBLEAddress { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
   #endif
   uint8_t espBLEAddrType = 0;
   bool doConnect   = false;
@@ -68,7 +68,7 @@ namespace ble
     }
     else if(myDevice)
     {
-      if(!pClient->connect(myDevice))  // if you pass BLEAdvertisedDevice instead of address, it will be recognized type of peer device address (public or private)
+      if(!pClient->connect(myDevice))
         return false;
       
       #ifdef DEBUG
@@ -78,7 +78,7 @@ namespace ble
     else
       return false;
 
-    pClient->setMTU(517);  //set client to request maximum MTU from server (default is 23 otherwise)
+    pClient->setMTU(517);  //set client to request maximum MTU from server
 
     // Obtain a reference to the service we are after in the remote BLE server.
     BLERemoteService *pRemoteService = pClient->getService(serviceUUID);
@@ -169,16 +169,13 @@ namespace ble
       myDevice = new BLEAdvertisedDevice(advertisedDevice);
 
       doConnect = true;
-    }  // Found our server
-  }  // onResult
+    }
+  }
 
   void BLESetup() noexcept
   {
     BLEDevice::init("");
 
-    // Retrieve a Scanner and set the callback we want to use to be informed when we
-    // have detected a new device.  Specify that we want active scanning and start the
-    // scan to run for 5 seconds.
     #ifdef AUTO_PAIR
     if(FileSystem::config.bIsConfigured)
     {

@@ -17,31 +17,23 @@ void setup()
   ambient::PrepareData();
 
   ble::BLESetup();
-}  // End of setup.
+}
 
-// This is the Arduino main loop function.
 void loop()
 {
-  // Do first connect after start up
   if (ble::doConnect == true)
   {
     if (ble::connectToServer())
     {
-      #ifdef DEBUG
-      Serial.println("First connection try is success");
-      #endif
-
       ambient::SetSpeed();
       ble::doConnect = false;
     }
     #ifdef DEBUG
     else
-      Serial.println("We have failed to connect to the server; will go to first connect loop");
+      Serial.println("We have failed to connect to the server");
     #endif
   }
 
-  // If we are connected to a peer BLE Server, update the characteristic each time we are reached
-  // with the current time since boot.
   if (ble::connected)
   {
     button.loop();
@@ -63,4 +55,4 @@ void loop()
     #endif
     ble::connectToServer();
   }
-}  // End of loop
+}
