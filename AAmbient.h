@@ -59,7 +59,7 @@ namespace ambient
   //brightness
   namespace brightness
   {
-	  static const uint8_t brightnessIDPos     = 4;
+	  static const uint8_t brightnessIDPos = 4;
 
 	  static uint8_t brightnessArray[msgArraySize] = { 0x7b, 0xff, 0x01, 0x00, 0x02, 0x00, 0xff, 0xff, 0xbf }; //2% for start
 

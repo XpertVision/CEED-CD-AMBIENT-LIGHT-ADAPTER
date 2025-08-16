@@ -23,7 +23,7 @@ void loop()
 {
   if (ble::doConnect == true)
   {
-    if (ble::connectToServer())
+    if (ble::connectToServer(true))
     {
       ambient::SetSpeed();
       ble::doConnect = false;

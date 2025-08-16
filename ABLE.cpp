@@ -1,5 +1,7 @@
 #include "ABLE.h"
 #include "AFileSystem.h"
+#include "AAmbient.h"
+#include "AModes.h"
 
 namespace ble
 {
@@ -29,7 +31,7 @@ namespace ble
   }
   #endif
 
-  bool connectToServer() noexcept
+  bool connectToServer(bool bIsFirstTry) noexcept
   {
     #ifdef DEBUG
     #ifdef AUTO_PAIR
@@ -148,6 +150,15 @@ namespace ble
     Serial.println("Ambient light system ON AIR");
     #endif
 
+    //sync mode for case when SPORT was enabled before last turn off
+    #ifdef SPORT_MODE
+    if(bIsFirstTry)
+    {
+      auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
+      ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
+    }
+    #endif
+    
     return true;
   }
 
