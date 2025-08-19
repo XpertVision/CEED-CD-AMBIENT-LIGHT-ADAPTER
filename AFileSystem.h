@@ -16,9 +16,12 @@ namespace FileSystem
     Save(const Save&) noexcept = default;
     Save& operator=(const Save&) noexcept = default;
 
-    bool bIsEnabled    = true; 
-    uint8_t modeID     = 0;
-    uint8_t brightness = 0x03;
+    bool bIsEnabled       = true; 
+    uint8_t modeID        = 0;
+    uint8_t brightness    = 0x03;
+    #ifdef SPORT_MODE
+    bool bDisabledInSport = false;
+    #endif
   };
 
   #ifdef AUTO_PAIR

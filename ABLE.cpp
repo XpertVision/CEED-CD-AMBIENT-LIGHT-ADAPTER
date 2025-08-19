@@ -152,10 +152,13 @@ namespace ble
 
     //sync mode for case when SPORT was enabled before last turn off
     #ifdef SPORT_MODE
-    if(bIsFirstTry)
+    if(bIsFirstTry && FileSystem::save.bDisabledInSport)
     {
       auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
       ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
+
+      FileSystem::save.bDisabledInSport = false;
+      FileSystem::WriteSettings();
     }
     #endif
     

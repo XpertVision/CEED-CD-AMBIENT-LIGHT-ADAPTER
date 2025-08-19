@@ -17,6 +17,8 @@ void clickedSportOnce(Button2& btn) noexcept
   {
     ble::pRemoteCharacteristic->writeValue(ambient::colors::colorRed, ambient::msgArraySize);
     ambient::mode::bIsSportMode = true;
+    FileSystem::save.bDisabledInSport = true;
+	  FileSystem::WriteSettings();
   }
   else if(ambient::statments::bIsEnabled && ambient::mode::bIsSportMode)
   {
@@ -30,6 +32,9 @@ void clickedSportOnce(Button2& btn) noexcept
       auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
       ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
       ambient::mode::bIsSportMode = false;
+
+      FileSystem::save.bDisabledInSport = false;
+	    FileSystem::WriteSettings();
     }
   }
   else if(!ambient::statments::bIsEnabled)
@@ -41,11 +46,17 @@ void clickedSportOnce(Button2& btn) noexcept
 
       ambient::mode::bIsSportMode = false;
       ambient::mode::bIsSportModeRejected = false;
+
+      FileSystem::save.bDisabledInSport = false;
+	    FileSystem::WriteSettings();
     }
     else
     {
       ble::pRemoteCharacteristic->writeValue(ambient::colors::colorRed, ambient::msgArraySize);
       ambient::mode::bIsSportMode = true;
+
+      FileSystem::save.bDisabledInSport = true;
+	    FileSystem::WriteSettings();
     }
   }
 }
@@ -95,6 +106,10 @@ void clickedOnce(Button2& btn) noexcept
       auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
       ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
       ambient::mode::bIsSportModeRejected = true;
+
+      FileSystem::save.bDisabledInSport = false;
+	    FileSystem::WriteSettings();
+
       return;
     }
     #endif
