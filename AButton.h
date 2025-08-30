@@ -6,6 +6,16 @@
 
 #ifdef BUTTON_INDICATOR
 #define INDICATION_PIN   4
+
+#ifdef BUTTON_INDICATOR_ADAPTIVE_BRIGHTNESS
+#include "driver/ledc.h"
+
+extern ledc_timer_config_t ledc_timer;
+extern ledc_channel_config_t ledc_chanel;
+extern uint8_t dutyOffLevel;
+extern uint8_t dutyOnLevel;
+#endif
+
 #endif
 
 #define BUTTON_PIN       3

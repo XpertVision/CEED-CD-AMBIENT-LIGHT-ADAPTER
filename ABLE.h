@@ -41,7 +41,9 @@ namespace ble
     public:
     MyClientCallback() noexcept = default;
     MyClientCallback(const MyClientCallback&) noexcept = default;
+    MyClientCallback(MyClientCallback&&) noexcept = delete;
     MyClientCallback& operator=(const MyClientCallback&) noexcept = default;
+    MyClientCallback& operator=(MyClientCallback&&) noexcept = delete;
   };
 
   static MyClientCallback myClientCallback;
@@ -56,7 +58,9 @@ namespace ble
     public:
     MyAdvertisedDeviceCallbacks() noexcept = default;
     MyAdvertisedDeviceCallbacks(const MyAdvertisedDeviceCallbacks&) noexcept = default;
+    MyAdvertisedDeviceCallbacks(MyAdvertisedDeviceCallbacks&&) noexcept = delete;
     MyAdvertisedDeviceCallbacks& operator=(const MyAdvertisedDeviceCallbacks&) noexcept = default;
+    MyAdvertisedDeviceCallbacks& operator=(MyAdvertisedDeviceCallbacks&&) noexcept = delete;
   };
 }
 #endif _A_BLE_H_

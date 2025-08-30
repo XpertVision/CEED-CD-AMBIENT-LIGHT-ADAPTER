@@ -61,7 +61,7 @@ namespace ble
       Serial.print("Forming a connection to ");
       Serial.println(BLEAddress(espBLEAddress).toString().c_str());
       #endif
-      if(!pClient->connect(BLEAddress(espBLEAddress), static_cast<esp_ble_addr_type_t>(espBLEAddrType)))
+      if(!pClient->connect(BLEAddress(espBLEAddress), espBLEAddrType))
         return false;
 
       #ifdef DEBUG

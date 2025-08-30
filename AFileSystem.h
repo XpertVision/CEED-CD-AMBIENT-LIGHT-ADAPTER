@@ -14,7 +14,9 @@ namespace FileSystem
   {
     Save() noexcept = default;
     Save(const Save&) noexcept = default;
+    Save(Save&&) noexcept = delete;
     Save& operator=(const Save&) noexcept = default;
+    Save& operator=(Save&&) noexcept = delete;
 
     bool bIsEnabled       = true; 
     uint8_t modeID        = 0;
@@ -29,7 +31,9 @@ namespace FileSystem
   {
     Config() noexcept = default;
     Config(const Config&) noexcept = default;
+    Config(Config&&) noexcept = delete;
     Config& operator=(const Config&) noexcept = default;
+    Config& operator=(Config&&) noexcept = delete;
 
     bool bIsConfigured = false;
     esp_bd_addr_t arrBLEAddress { 0, 0, 0, 0, 0, 0 };

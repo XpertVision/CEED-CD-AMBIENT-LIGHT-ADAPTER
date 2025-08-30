@@ -8,6 +8,16 @@
 
 Button2 button;
 
+#ifdef BUTTON_INDICATOR
+#ifdef BUTTON_INDICATOR_ADAPTIVE_BRIGHTNESS
+ledc_timer_config_t ledc_timer;
+ledc_channel_config_t ledc_chanel;
+//Level of brightness from 0 - disable, to 1023 - max brightness
+extern uint8_t dutyOffLevel = 0;
+extern uint8_t dutyOnLevel  = 511;
+#endif
+#endif
+
 #ifdef SPORT_MODE
 Button2 buttonSport;
 
@@ -65,10 +75,6 @@ void clickedSportOnce(Button2& btn) noexcept
 
 void buttonSetup() noexcept
 {
-  #ifdef BUTTON_INDICATOR
-  pinMode(INDICATION_PIN, OUTPUT);
-  #endif
-
   button.begin(BUTTON_PIN);
   button.setLongClickTime(1000);
   button.setDoubleClickTime(500);
@@ -85,6 +91,31 @@ void buttonSetup() noexcept
   buttonSport.setDoubleClickTime(1);//Make double click impossible
   buttonSport.setLongClickDetectedRetriggerable(false);
   buttonSport.setClickHandler(clickedSportOnce);
+  #endif
+
+  #ifdef BUTTON_INDICATOR
+  #ifdef BUTTON_INDICATOR_ADAPTIVE_BRIGHTNESS
+
+  ledc_timer.speed_mode      = LEDC_HIGH_SPEED_MODE;
+  ledc_timer.timer_num       = LEDC_TIMER_3;
+  ledc_timer.duty_resolution = LEDC_TIMER_10_BIT;
+  ledc_timer.freq_hz         = 250;
+  ledc_timer.clk_cfg         = LEDC_AUTO_CLK;
+
+  ledc_timer_config(&ledc_timer);
+
+  ledc_chanel.timer_sel  = LEDC_TIMER_3;
+  ledc_chanel.channel    = LEDC_CHANNEL_1;
+  ledc_chanel.duty       = dutyOnLevel;
+  ledc_chanel.gpio_num   = INDICATION_PIN;
+  ledc_chanel.hpoint     = 0;
+  ledc_chanel.intr_type  = LEDC_INTR_DISABLE;
+  ledc_chanel.speed_mode = LEDC_HIGH_SPEED_MODE;
+
+  ledc_channel_config(&ledc_chanel);
+  #else
+  pinMode(INDICATION_PIN, OUTPUT);
+  #endif
   #endif
 }
 
