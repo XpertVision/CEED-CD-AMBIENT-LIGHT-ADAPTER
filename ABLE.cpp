@@ -8,7 +8,7 @@ namespace ble
   #ifdef AUTO_PAIR
   esp_bd_addr_t espBLEAddress;
   #else
-  esp_bd_addr_t espBLEAddress { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+  esp_bd_addr_t espBLEAddress { 0xff, 0xff, 0x11, 0xdd, 0x46, 0xd7 };
   #endif
   uint8_t espBLEAddrType = 0;
   bool doConnect   = false;
@@ -31,7 +31,7 @@ namespace ble
   }
   #endif
 
-  bool connectToServer(bool bIsFirstTry) noexcept
+  bool connectToServer() noexcept
   {
     #ifdef DEBUG
     #ifdef AUTO_PAIR
@@ -127,7 +127,8 @@ namespace ble
       pRemoteCharacteristic->registerForNotify(notifyCallback);
     #endif
 
-    connected = true;
+    doConnect   = false;
+    connected   = true;
     doReconnect = false;
 
     #ifdef AUTO_PAIR
@@ -148,18 +149,6 @@ namespace ble
 
     #ifdef DEBUG
     Serial.println("Ambient light system ON AIR");
-    #endif
-
-    //sync mode for case when SPORT was enabled before last turn off
-    #ifdef SPORT_MODE
-    if(bIsFirstTry && FileSystem::save.bDisabledInSport)
-    {
-      auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
-      ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
-
-      FileSystem::save.bDisabledInSport = false;
-      FileSystem::WriteSettings();
-    }
     #endif
     
     return true;

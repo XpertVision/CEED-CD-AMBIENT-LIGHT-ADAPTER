@@ -23,10 +23,37 @@ void loop()
 {
   if (ble::doConnect == true)
   {
-    if (ble::connectToServer(true))
+    if (ble::connectToServer())
     {
+      #ifdef PREVENT_AUTO_ENABLE_GLITCH
+      //Prevent Main LED Module glitch, when it turn on after power on, even if it was disabled
+      if(ambient::statments::bIsEnabled == false)
+      {
+        ambient::statments::onOffArray[ambient::statments::onOffIDPos] = ambient::statments::offID;
+        bool bSuccess = false;
+        while(!bSuccess)
+        {
+          bSuccess = ble::pRemoteCharacteristic->writeValue(ambient::statments::onOffArray, ambient::msgArraySize);
+          #ifdef DEBUG
+          Serial.println("Try prevent Main LED Module glitch");
+          #endif
+        }
+      }
+      #endif
+
+      //sync mode for case when SPORT was enabled before last turn off
+      #ifdef SPORT_MODE
+      if(FileSystem::save.bDisabledInSport)
+      {
+        auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
+        ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
+
+        FileSystem::save.bDisabledInSport = false;
+        FileSystem::WriteSettings();
+      }
+      #endif
+
       ambient::SetSpeed();
-      ble::doConnect = false;
     }
     #ifdef DEBUG
     else

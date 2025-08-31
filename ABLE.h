@@ -48,7 +48,7 @@ namespace ble
 
   static MyClientCallback myClientCallback;
 
-  bool connectToServer(bool bIsFirstTry = false) noexcept;
+  bool connectToServer() noexcept;
 
   //Scan for BLE servers and find the first one that advertises the service we are looking for.
   class MyAdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks
