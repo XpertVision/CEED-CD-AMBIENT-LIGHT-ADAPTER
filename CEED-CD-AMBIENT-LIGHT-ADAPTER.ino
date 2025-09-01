@@ -30,13 +30,14 @@ void loop()
       if(ambient::statments::bIsEnabled == false)
       {
         ambient::statments::onOffArray[ambient::statments::onOffIDPos] = ambient::statments::offID;
-        bool bSuccess = false;
-        while(!bSuccess)
+        uint8_t count = 0;
+        while(count < 5)
         {
-          bSuccess = ble::pRemoteCharacteristic->writeValue(ambient::statments::onOffArray, ambient::msgArraySize);
+          ble::pRemoteCharacteristic->writeValue(ambient::statments::onOffArray, ambient::msgArraySize);
           #ifdef DEBUG
           Serial.println("Try prevent Main LED Module glitch");
           #endif
+          ++count;
         }
       }
       #endif
@@ -45,11 +46,28 @@ void loop()
       #ifdef SPORT_MODE
       if(FileSystem::save.bDisabledInSport)
       {
+        if(ambient::statments::bIsEnabled == true)
+        {
+          ambient::statments::onOffArray[ambient::statments::onOffIDPos] = ambient::statments::offID;
+
+          ble::pRemoteCharacteristic->writeValue(ambient::statments::onOffArray, ambient::msgArraySize);
+          #ifdef DEBUG
+          Serial.println("Try turn off Main LED Module for SPORT sync");
+          #endif
+        }
+
         auto mode = ambient::statments::vAllModes[ambient::statments::currentMode];
         ble::pRemoteCharacteristic->writeValue(mode, ambient::msgArraySize);
 
         FileSystem::save.bDisabledInSport = false;
         FileSystem::WriteSettings();
+        
+        if(ambient::statments::bIsEnabled == true)
+        {
+          ambient::statments::onOffArray[ambient::statments::onOffIDPos] = ambient::statments::onID;
+          ble::pRemoteCharacteristic->writeValue(ambient::statments::onOffArray, ambient::msgArraySize);
+        }
+
       }
       #endif
 

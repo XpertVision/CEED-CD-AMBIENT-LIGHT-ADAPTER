@@ -2,7 +2,7 @@
 #define _A_MODES_H_
 
 //Uncomment for enabling sport mode
-//#define SPORT_MODE
+#define SPORT_MODE
 
 //Uncomment for enabling auto pairing
 //#define AUTO_PAIR
